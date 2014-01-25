@@ -294,16 +294,16 @@ public class Bilheteria {
         compraHelper.gravarObjeto(compra);
 
         // Recupera compra
-        Compra compra2 = compraHelper.getTodosObjetos().get(0);
+        Compra compraRecuperada = compraHelper.getTodosObjetos().get(0);
         System.out.println("Compra:");
-        System.out.println(compra2);
+        System.out.println(compraRecuperada);
 
         // Ingressos após compra
         System.out.println("\nApós compra:");
         System.out.println(ingressoHelper.getTodosObjetos());
 
         // Remove compra
-        compraHelper.remove(compra2);
+        compraHelper.remove(compraRecuperada);
 
         // Ingressos após remover compra
         System.out.println("\nApós remover compra:");
