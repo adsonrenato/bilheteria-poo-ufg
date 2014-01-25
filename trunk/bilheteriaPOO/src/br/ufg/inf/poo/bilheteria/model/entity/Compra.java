@@ -83,6 +83,14 @@ public class Compra extends Entidade {
     }
     
     public void finaliza(){
+        if(formaPagamento.equals(FormaPagamento.DINHEIRO)){
+            valorComDinheiro();
+        } else {
+            valorComCartao();
+        }
+    }
+    
+    private void valorComDinheiro(){
         for(Ingresso ingresso : ingressos){
             float valorIngresso = ingresso.getValor();
             if(valorIngresso > 50){
@@ -90,6 +98,12 @@ public class Compra extends Entidade {
             } else {
                 valor += valorIngresso - DESCONTO_MINIMO;
             }
+        }
+    }
+    
+    private void valorComCartao(){
+        for(Ingresso ingresso : ingressos){
+                valor += ingresso.getValor();
         }
     }
 
