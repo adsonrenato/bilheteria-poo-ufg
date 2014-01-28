@@ -184,13 +184,13 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Importador importador = new Importador();
         
-        System.out.println("Digite o caminho do arquivo de clientes:");
-        String arquivoClientes = scanner.nextLine();
-        importador.importarClientes(arquivoClientes);
-        
         System.out.println("Digite o caminho do arquivo de endereços:");
         String arquivoEnderecos = scanner.nextLine();
         importador.importarEnderecos(arquivoEnderecos);
+        
+        System.out.println("Digite o caminho do arquivo de clientes:");
+        String arquivoClientes = scanner.nextLine();
+        importador.importarClientes(arquivoClientes);
         
         System.out.println("Digite o caminho do arquivo de eventos:");
         String arquivoEventos = scanner.nextLine();
