@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class CompraGravacaoHelper implements ServiceHelper<Compra> {
+public class CompraServiceHelper implements ServiceHelper<Compra> {
 
     private final int ATRIBUTO_CLIENTE = 1;
     private final int ATRIBUTO_DATA = 2;
@@ -20,14 +20,14 @@ public class CompraGravacaoHelper implements ServiceHelper<Compra> {
     private final String ARQUIVO = "compras.csv";
     private CSVToFile gerenciadorDeArquivo;
 
-    public CompraGravacaoHelper() {
+    public CompraServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
 
     @Override
     public boolean gravarObjeto(Compra compra) {
-        ClienteGravacaoHelper clienteHelper = new ClienteGravacaoHelper();
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
+        ClienteServiceHelper clienteHelper = new ClienteServiceHelper();
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
         
         if (compra != null && !gerenciadorDeArquivo.contem(compra.getId())
                 && compra.getIngressos().size() > 0) {
@@ -87,7 +87,7 @@ public class CompraGravacaoHelper implements ServiceHelper<Compra> {
 
     @Override
     public boolean remove(Compra compra) {
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
         
         List<Ingresso> ingressos = ingressoHelper.
                 getIngressosPorCompra(compra.getId());
@@ -117,8 +117,8 @@ public class CompraGravacaoHelper implements ServiceHelper<Compra> {
     }
 
     private Compra getObject(String line) {
-        ClienteGravacaoHelper clienteHelper = new ClienteGravacaoHelper();
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
+        ClienteServiceHelper clienteHelper = new ClienteServiceHelper();
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
         
         String[] compra = line.split(
                 String.valueOf(ServiceHelper.SEPARADOR));

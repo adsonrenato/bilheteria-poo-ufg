@@ -9,12 +9,12 @@ import br.ufg.inf.poo.bilheteria.persistencia.base.CSVToFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnderecoGravacaoHelper implements ServiceHelper<Endereco> {
+public class EnderecoServiceHelper implements ServiceHelper<Endereco> {
 
     private final String ARQUIVO = "enderecos.csv";
     private CSVToFile gerenciadorDeArquivo;
 
-    public EnderecoGravacaoHelper() {
+    public EnderecoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
 
