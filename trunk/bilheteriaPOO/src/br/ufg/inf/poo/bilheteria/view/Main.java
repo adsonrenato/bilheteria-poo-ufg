@@ -12,6 +12,7 @@ import br.ufg.inf.poo.bilheteria.persistencia.impl.EventoServiceHelper;
 import java.util.Scanner;
 import br.ufg.inf.poo.bilheteria.persistencia.impl.IngressoServiceHelper;
 import br.ufg.inf.poo.bilheteria.persistencia.impl.SecaoServiceHelper;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -148,10 +149,8 @@ public class Main {
         for (Evento evento : eventos) {
             System.out.println("------------RELATORIO DE CLIENTES POR EVENTO---------------");
             System.out.println("Evento: " + evento.getNome());
-            HashMap<String, Cliente> clientes = igh.getClientesEvento(evento.getId());
-            List<Cliente> clientesList = (List) clientes.values();
-            for(int i=0; i<clientesList.size(); i++){
-                Cliente cliente = clientesList.get(i);
+            List<Cliente> clientes = igh.getClientesEvento(evento.getId());
+            for(Cliente cliente : clientes){
                 System.out.println("Cliente: " + cliente.getNome());
             }
             System.out.println("---");
