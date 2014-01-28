@@ -11,11 +11,11 @@ import br.ufg.inf.poo.bilheteria.model.entity.Evento;
 import br.ufg.inf.poo.bilheteria.model.entity.FormaPagamento;
 import br.ufg.inf.poo.bilheteria.model.entity.Ingresso;
 import br.ufg.inf.poo.bilheteria.model.entity.Secao;
-import br.ufg.inf.poo.bilheteria.persistencia.impl.ClienteGravacaoHelper;
-import br.ufg.inf.poo.bilheteria.persistencia.impl.CompraGravacaoHelper;
-import br.ufg.inf.poo.bilheteria.persistencia.impl.EventoGravacaoHelper;
-import br.ufg.inf.poo.bilheteria.persistencia.impl.IngressoGravacaoHelper;
-import br.ufg.inf.poo.bilheteria.persistencia.impl.SecaoGravacaoHelper;
+import br.ufg.inf.poo.bilheteria.persistencia.impl.ClienteServiceHelper;
+import br.ufg.inf.poo.bilheteria.persistencia.impl.CompraServiceHelper;
+import br.ufg.inf.poo.bilheteria.persistencia.impl.EventoServiceHelper;
+import br.ufg.inf.poo.bilheteria.persistencia.impl.IngressoServiceHelper;
+import br.ufg.inf.poo.bilheteria.persistencia.impl.SecaoServiceHelper;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
@@ -29,10 +29,10 @@ public class Bilheteria {
 
     public static void main(String args[]) {
         /* Teste -------------------------------------------------------------*/
-        testeCliente();
-        testeEvento();
-        testeSecao();
-        testeIngresso();
+        //testeCliente();
+        //testeEvento();
+        //testeSecao();
+        //testeIngresso();
         testeCompra();
 
         System.exit(0);
@@ -168,7 +168,7 @@ public class Bilheteria {
         Cliente c = new Cliente("000.000.001-91", "Raul", e, "3200-0000");
 
         // Grava cliente
-        ClienteGravacaoHelper clienteHelper = new ClienteGravacaoHelper();
+        ClienteServiceHelper clienteHelper = new ClienteServiceHelper();
         clienteHelper.gravarObjeto(c);
 
         // Recupera cliente
@@ -177,7 +177,7 @@ public class Bilheteria {
 
         // Remove cliente
         clienteHelper.remove(cliente2);
-        
+
         apagaArquivos();
     }
 
@@ -186,7 +186,7 @@ public class Bilheteria {
         date.set(Calendar.DAY_OF_MONTH, 5);
 
         Evento evento = new Evento("Carmen", "Ópera em Goiânia!", date, "Teatro Rio Vermelho");
-        EventoGravacaoHelper eventoHelper = new EventoGravacaoHelper();
+        EventoServiceHelper eventoHelper = new EventoServiceHelper();
 
         // Grava evento
         eventoHelper.gravarObjeto(evento);
@@ -197,13 +197,13 @@ public class Bilheteria {
 
         // Remove evento
         eventoHelper.remove(evento2);
-        
+
         apagaArquivos();
     }
 
     private static void testeSecao() {
         Secao secao = new Secao("Arquibancada", 50.0f);
-        SecaoGravacaoHelper secaoHelper = new SecaoGravacaoHelper();
+        SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
 
         // Grava secao
         secaoHelper.gravarObjeto(secao);
@@ -214,7 +214,7 @@ public class Bilheteria {
 
         // Remove secao
         secaoHelper.remove(secao2);
-        
+
         apagaArquivos();
     }
 
@@ -223,17 +223,17 @@ public class Bilheteria {
         Calendar date = Calendar.getInstance();
         date.set(Calendar.DAY_OF_MONTH, 5);
         Evento evento = new Evento("Carmen", "Ópera em Goiânia!", date, "Teatro Rio Vermelho");
-        EventoGravacaoHelper eventoHelper = new EventoGravacaoHelper();
+        EventoServiceHelper eventoHelper = new EventoServiceHelper();
         eventoHelper.gravarObjeto(evento);
 
         // Seção
         Secao secao = new Secao("Arquibancada", 50.0f);
-        SecaoGravacaoHelper secaoHelper = new SecaoGravacaoHelper();
+        SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
         secaoHelper.gravarObjeto(secao);
 
 
         Ingresso ingresso = new Ingresso(1, evento, secao);
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
 
         // Grava ingresso
         ingressoHelper.gravarObjeto(ingresso);
@@ -244,7 +244,7 @@ public class Bilheteria {
 
         // Remove ingresso
         ingressoHelper.remove(ingresso2);
-        
+
         apagaArquivos();
     }
 
@@ -253,36 +253,68 @@ public class Bilheteria {
         Cliente cliente = new Cliente("000.000.001-91", "Raul", endereco, "3200-0000");
 
         // Cliente
-        ClienteGravacaoHelper clienteHelper = new ClienteGravacaoHelper();
+        ClienteServiceHelper clienteHelper = new ClienteServiceHelper();
         clienteHelper.gravarObjeto(cliente);
 
-        // Evento
+        // Evento Carmen
         Calendar date = Calendar.getInstance();
         date.set(Calendar.DAY_OF_MONTH, 5);
         Evento evento = new Evento("Carmen", "Ópera em Goiânia!", date, "Teatro Rio Vermelho");
-        EventoGravacaoHelper eventoHelper = new EventoGravacaoHelper();
+        EventoServiceHelper eventoHelper = new EventoServiceHelper();
         eventoHelper.gravarObjeto(evento);
-
-        // Seção Arquibancada
-        Secao secao = new Secao("Arquibancada", 49.99f);
-        SecaoGravacaoHelper secaoHelper = new SecaoGravacaoHelper();
-        secaoHelper.gravarObjeto(secao);
         
+        // Evento Rock 'n Rio
+        date.set(Calendar.DAY_OF_MONTH, 20);
+        Evento eventoRock = new Evento("Rock 'n Rio", "Maior show de rock do Brasil!", 
+                date, "Teatro Rio Vermelho");
+        eventoHelper.gravarObjeto(eventoRock);
+
+        // Seção Arquibancada - Carmen
+        Secao secaoArqCarmen = new Secao("Arquibancada", 49.99f);
+        SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
+        secaoHelper.gravarObjeto(secaoArqCarmen);
+
         // Seção VIP
-        Secao secaoVIP = new Secao("Arquibancada", 99.99f);
-        secaoHelper.gravarObjeto(secaoVIP);
-
-        // Ingresso
-        Ingresso ingresso = new Ingresso(1, evento, secao);
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
-        ingressoHelper.gravarObjeto(ingresso);
+        Secao secaoVIPCarmen = new Secao("VIP", 99.99f);
+        secaoHelper.gravarObjeto(secaoVIPCarmen);
         
-        // Ingresso na seção vip
-        Ingresso ingressoVIP = new Ingresso(2, evento, secaoVIP);
-        ingressoHelper.gravarObjeto(ingressoVIP);
+        // Seção Arquibancada - Carmen
+        Secao secaoArqRock = new Secao("Arquibancada Rock", 49.99f);
+        secaoHelper.gravarObjeto(secaoArqRock);
+
+        // Seção VIP
+        Secao secaoVIPRock = new Secao("VIP Rock", 99.99f);
+        secaoHelper.gravarObjeto(secaoVIPRock);
+
+
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
+
+        // 50 ingressos na arquibancada Carmen
+        for (int i = 0; i < 50; i++) {
+            Ingresso ingresso = new Ingresso(i + 1, evento, secaoArqCarmen);
+            ingressoHelper.gravarObjeto(ingresso);
+        }
+
+        // 10 ingressos na seção vip Carmen
+        for (int i = 0; i <10; i++) {
+            Ingresso ingressoVIP = new Ingresso(51+i, evento, secaoVIPCarmen);
+            ingressoHelper.gravarObjeto(ingressoVIP);
+        }
+        
+        // 60 ingressos na arquibancada Rock
+        for (int i = 0; i < 60; i++) {
+            Ingresso ingresso = new Ingresso(i + 1, eventoRock, secaoArqRock);
+            ingressoHelper.gravarObjeto(ingresso);
+        }
+
+        // 25 ingressos na seção vip Rock
+        for (int i = 0; i <25; i++) {
+            Ingresso ingressoVIP = new Ingresso(61+i, eventoRock, secaoVIPRock);
+            ingressoHelper.gravarObjeto(ingressoVIP);
+        }
 
         // Recupera ingresso sem compra
-        List<Ingresso> ingressosComprados = ingressoHelper.getTodosObjetos();
+        List<Ingresso> ingressosComprados = ingressoHelper.getIngressosPorSecao(secaoArqCarmen.getId());
 
         // Realiza compra
         Compra compra = new Compra(cliente, date, FormaPagamento.DINHEIRO);
@@ -290,7 +322,7 @@ public class Bilheteria {
         compra.finaliza();
 
         // Grava compra
-        CompraGravacaoHelper compraHelper = new CompraGravacaoHelper();
+        CompraServiceHelper compraHelper = new CompraServiceHelper();
         compraHelper.gravarObjeto(compra);
 
         // Recupera compra
@@ -303,35 +335,35 @@ public class Bilheteria {
         System.out.println(ingressoHelper.getTodosObjetos());
 
         // Remove compra
-        compraHelper.remove(compraRecuperada);
+        //compraHelper.remove(compraRecuperada);
 
         // Ingressos após remover compra
         System.out.println("\nApós remover compra:");
         System.out.println(ingressoHelper.getTodosObjetos());
-        
-        apagaArquivos();
+
+        //apagaArquivos();
     }
 
     /**
      * Apaga arquivos após teste
      */
     private static void apagaArquivos() {
-            File f = new File("compras.csv");
-            f.delete();
-            
-            f = new File("eventos.csv");
-            f.delete();
-            
-            f = new File("ingressos.csv");
-            f.delete();
-            
-            f = new File("clientes.csv");
-            f.delete();
-            
-            f = new File("secoes.csv");
-            f.delete();
-            
-            f = new File("enderecos.csv");
-            f.delete();
+        File f = new File("compras.csv");
+        f.delete();
+
+        f = new File("eventos.csv");
+        f.delete();
+
+        f = new File("ingressos.csv");
+        f.delete();
+
+        f = new File("clientes.csv");
+        f.delete();
+
+        f = new File("secoes.csv");
+        f.delete();
+
+        f = new File("enderecos.csv");
+        f.delete();
     }
 }

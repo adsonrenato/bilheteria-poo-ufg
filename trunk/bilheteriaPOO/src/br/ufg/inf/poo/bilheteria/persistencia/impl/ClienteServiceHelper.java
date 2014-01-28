@@ -9,18 +9,18 @@ import java.util.List;
  *
  * @author alunoinf
  */
-public class ClienteGravacaoHelper implements ServiceHelper<Cliente> {
+public class ClienteServiceHelper implements ServiceHelper<Cliente> {
 
     private final String ARQUIVO = "clientes.csv";
     private CSVToFile gerenciadorDeArquivo;
 
-    public ClienteGravacaoHelper() {
+    public ClienteServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
 
     @Override
     public boolean gravarObjeto(Cliente cliente) {
-        EnderecoGravacaoHelper enderecoHelper = new EnderecoGravacaoHelper();
+        EnderecoServiceHelper enderecoHelper = new EnderecoServiceHelper();
 
         if (!contemCpf(cliente.getCpf())) {
             enderecoHelper.gravarObjeto(cliente.getEndereco());
@@ -62,7 +62,7 @@ public class ClienteGravacaoHelper implements ServiceHelper<Cliente> {
 
     @Override
     public boolean remove(Cliente cliente) {
-        EnderecoGravacaoHelper enderecoHelper = new EnderecoGravacaoHelper();
+        EnderecoServiceHelper enderecoHelper = new EnderecoServiceHelper();
         if (!contemCompra(cliente)) {
             enderecoHelper.remove(cliente.getEndereco());
             return gerenciadorDeArquivo.removerLinha(cliente.getId());
@@ -86,7 +86,7 @@ public class ClienteGravacaoHelper implements ServiceHelper<Cliente> {
     }
 
     private Cliente getObject(String line) {
-        EnderecoGravacaoHelper enderecoHelper = new EnderecoGravacaoHelper();
+        EnderecoServiceHelper enderecoHelper = new EnderecoServiceHelper();
         String[] pessoa = line.split(
                 String.valueOf(ServiceHelper.SEPARADOR));
 
@@ -109,7 +109,7 @@ public class ClienteGravacaoHelper implements ServiceHelper<Cliente> {
     }
 
     private boolean contemCompra(Cliente cliente) {
-        CompraGravacaoHelper compraHelper = new CompraGravacaoHelper();
+        CompraServiceHelper compraHelper = new CompraServiceHelper();
 
         int size = compraHelper.getComprasPorCliente(cliente.getId()).size();
         return size > 0;

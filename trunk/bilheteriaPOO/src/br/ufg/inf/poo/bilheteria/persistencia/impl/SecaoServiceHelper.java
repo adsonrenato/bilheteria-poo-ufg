@@ -9,12 +9,12 @@ import java.util.List;
  *
  * @author alunoinf
  */
-public class SecaoGravacaoHelper implements ServiceHelper<Secao> {
+public class SecaoServiceHelper implements ServiceHelper<Secao> {
 
     private final String ARQUIVO = "secoes.csv";
     private CSVToFile gerenciadorDeArquivo;
 
-    public SecaoGravacaoHelper() {
+    public SecaoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
     

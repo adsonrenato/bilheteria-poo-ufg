@@ -3,9 +3,10 @@ package br.ufg.inf.poo.bilheteria.persistencia.impl;
 import br.ufg.inf.poo.bilheteria.model.entity.*;
 import br.ufg.inf.poo.bilheteria.persistencia.base.CSVToFile;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class IngressoGravacaoHelper implements ServiceHelper<Ingresso> {
+public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
     private final int ATRIBUTO_EVENTO = 1;
     private final int ATRIBUTO_POSICAO = 2;
     private final int ATRIBUTO_SECAO = 3;
@@ -14,15 +15,15 @@ public class IngressoGravacaoHelper implements ServiceHelper<Ingresso> {
     private final String ARQUIVO = "ingressos.csv";
     private CSVToFile gerenciadorDeArquivo;
     
-    public IngressoGravacaoHelper() {
+    public IngressoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
 
     @Override
     public boolean gravarObjeto(Ingresso ingresso) {
-        EventoGravacaoHelper eventoHelper = new EventoGravacaoHelper();
-        SecaoGravacaoHelper secaoHelper = new SecaoGravacaoHelper();
-        //CompraGravacaoHelper compraHelper = new CompraGravacaoHelper();
+        EventoServiceHelper eventoHelper = new EventoServiceHelper();
+        SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
+        //CompraGravacaoHelper compraHelper = new CompraServiceHelper();
         
         if (!gerenciadorDeArquivo.contem(ingresso.getEvento().getId(), 
                 ingresso.getPosicao())) {
@@ -124,9 +125,9 @@ public class IngressoGravacaoHelper implements ServiceHelper<Ingresso> {
     }
 
     private Ingresso getObject(String line) {
-        EventoGravacaoHelper eventoHelper = new EventoGravacaoHelper();
-        SecaoGravacaoHelper secaoHelper = new SecaoGravacaoHelper();
-        CompraGravacaoHelper compraHelper = new CompraGravacaoHelper();
+        EventoServiceHelper eventoHelper = new EventoServiceHelper();
+        SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
+        CompraServiceHelper compraHelper = new CompraServiceHelper();
         
         String[] ingresso = line.split(
                 String.valueOf(ServiceHelper.SEPARADOR));
@@ -145,5 +146,73 @@ public class IngressoGravacaoHelper implements ServiceHelper<Ingresso> {
         resultado.setId(id);
         resultado.setCompra(compra);
         return resultado;
+    }
+    
+    public int getTotalDeIngressosVendidos(long idEvento) {
+
+        ArrayList ingressos = (ArrayList) getTodosObjetos();
+        int ingressosVendidos = 0;
+        Ingresso ingresso;
+
+        for (int i = 0; i < ingressos.size(); i++) {
+            ingresso = (Ingresso) ingressos.get(i);
+
+            if ((ingresso.getCompra() != null) && (ingresso.getEvento().getId() == idEvento)) {
+                ingressosVendidos++;
+            }
+        }
+
+        return ingressosVendidos;
+    }
+    
+    public int getTotalDeIngressosVendidosPorSecao(long idSecao) {
+
+        ArrayList ingressos = (ArrayList) getIngressosPorSecao(idSecao);
+        int ingressosVendidos = 0;
+        Ingresso ingresso;
+
+        for (int i = 0; i < ingressos.size(); i++) {
+            ingresso = (Ingresso) ingressos.get(i);
+
+            if ((ingresso.getCompra() != null)) {
+                ingressosVendidos++;
+            }
+        }
+
+        return ingressosVendidos;
+    }
+
+    public int getTotalDeIngressos(long idEvento) {
+
+        int totalIngressosDoEvento = 0;
+        ArrayList ingressos = (ArrayList) getTodosObjetos();
+        Ingresso ingresso;
+
+        for (int i = 0; i < ingressos.size(); i++) {
+            ingresso = (Ingresso) ingressos.get(i);
+
+            if (ingresso.getEvento().getId() == idEvento) {
+                totalIngressosDoEvento++;
+            }
+        }
+        return totalIngressosDoEvento;
+    }
+    
+     public HashMap<String, Cliente> getClientesEvento(long idEvento) {
+
+        HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
+        Ingresso ingresso;
+
+        for (int i = 0; i < getTodosObjetos().size(); i++) {
+
+            ingresso = getTodosObjetos().get(i);
+
+            if ((ingresso.getEvento().getId() == idEvento) && (ingresso.getCompra() != null)) {
+                    Cliente cliente = ingresso.getCompra().getCliente();
+                    clientes.put(cliente.getCpf(), cliente);
+            }
+        }
+
+        return clientes;
     }
 }

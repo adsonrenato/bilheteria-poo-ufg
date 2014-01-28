@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author alunoinf
  */
-public class EventoGravacaoHelper implements ServiceHelper<Evento> {
+public class EventoServiceHelper implements ServiceHelper<Evento> {
     private final int ATRIBUTO_NOME = 1;
     private final int ATRIBUTO_DESCRICAO = 2;
     private final int ATRIBUTO_DATA = 3;
@@ -20,7 +20,7 @@ public class EventoGravacaoHelper implements ServiceHelper<Evento> {
     private final String ARQUIVO = "eventos.csv";
     private CSVToFile gerenciadorDeArquivo;
 
-    public EventoGravacaoHelper() {
+    public EventoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
 
@@ -82,7 +82,7 @@ public class EventoGravacaoHelper implements ServiceHelper<Evento> {
     }
 
     private Evento getObject(String line) {
-        IngressoGravacaoHelper ingressoHelper = new IngressoGravacaoHelper();
+        IngressoServiceHelper ingressoHelper = new IngressoServiceHelper();
         
         String[] evento = line.split(
                 String.valueOf(ServiceHelper.SEPARADOR));
