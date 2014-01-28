@@ -146,11 +146,11 @@ public class Main {
         EventoServiceHelper esh = new EventoServiceHelper();
         List<Evento> eventos = esh.getTodosObjetos();
 
+        System.out.println("------------RELATORIO DE CLIENTES POR EVENTO---------------");
         for (Evento evento : eventos) {
-            System.out.println("------------RELATORIO DE CLIENTES POR EVENTO---------------");
             System.out.println("Evento: " + evento.getNome());
             List<Cliente> clientes = igh.getClientesEvento(evento.getId());
-            for(Cliente cliente : clientes){
+            for (Cliente cliente : clientes) {
                 System.out.println("Cliente: " + cliente.getNome());
             }
             System.out.println("---");
@@ -158,6 +158,16 @@ public class Main {
     }
 
     private static void exibeRelatorioDeReceitaBruta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        IngressoServiceHelper igh = new IngressoServiceHelper();
+
+        EventoServiceHelper esh = new EventoServiceHelper();
+        List<Evento> eventos = esh.getTodosObjetos();
+
+        System.out.println("------------RELATORIO DE RECEITA BRUTA---------------");
+        for (Evento evento : eventos) {
+            System.out.println("Evento: " + evento.getNome());
+            System.out.println("Receita bruta: " + igh.getReceitaBruta(evento.getId()));
+            System.out.println("---");
+        }
     }
 }

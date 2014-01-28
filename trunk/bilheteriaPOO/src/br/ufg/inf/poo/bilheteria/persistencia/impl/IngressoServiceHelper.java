@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
+
     private final int ATRIBUTO_EVENTO = 1;
     private final int ATRIBUTO_POSICAO = 2;
     private final int ATRIBUTO_SECAO = 3;
     private final int ATRIBUTO_COMPRA = 4;
-    
     private final String ARQUIVO = "ingressos.csv";
     private CSVToFile gerenciadorDeArquivo;
-    
+
     public IngressoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
@@ -24,14 +24,14 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         EventoServiceHelper eventoHelper = new EventoServiceHelper();
         SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
         //CompraGravacaoHelper compraHelper = new CompraServiceHelper();
-        
-        if (!gerenciadorDeArquivo.contem(ingresso.getEvento().getId(), 
+
+        if (!gerenciadorDeArquivo.contem(ingresso.getEvento().getId(),
                 ingresso.getPosicao())) {
-            
+
             eventoHelper.gravarObjeto(ingresso.getEvento());
             secaoHelper.gravarObjeto(ingresso.getSecao());
             //compraHelper.gravarObjeto(ingresso.getCompra());
-        
+
             return gerenciadorDeArquivo.gravarLinha(toLine(ingresso));
         } else {
             return false;
@@ -55,10 +55,9 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
             return null;
         }
     }
-    
+
     public List<Ingresso> getIngressosPorEvento(long idEvento) {
-        List<String> listaObjetos = gerenciadorDeArquivo
-                .getObjetosPorAtributo(idEvento, ATRIBUTO_EVENTO);
+        List<String> listaObjetos = gerenciadorDeArquivo.getObjetosPorAtributo(idEvento, ATRIBUTO_EVENTO);
         List<Ingresso> resultado = new ArrayList<Ingresso>();
         for (String entrada : listaObjetos) {
             Ingresso ingresso = getObject(entrada);
@@ -66,10 +65,9 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         }
         return resultado;
     }
-    
+
     public List<Ingresso> getIngressosPorSecao(long idSecao) {
-        List<String> listaObjetos = gerenciadorDeArquivo
-                .getObjetosPorAtributo(idSecao, ATRIBUTO_SECAO);
+        List<String> listaObjetos = gerenciadorDeArquivo.getObjetosPorAtributo(idSecao, ATRIBUTO_SECAO);
         List<Ingresso> resultado = new ArrayList<Ingresso>();
         for (String entrada : listaObjetos) {
             Ingresso ingresso = getObject(entrada);
@@ -77,10 +75,9 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         }
         return resultado;
     }
-    
+
     public List<Ingresso> getIngressosPorCompra(long idCompra) {
-        List<String> listaObjetos = gerenciadorDeArquivo
-                .getObjetosPorAtributo(idCompra, ATRIBUTO_COMPRA);
+        List<String> listaObjetos = gerenciadorDeArquivo.getObjetosPorAtributo(idCompra, ATRIBUTO_COMPRA);
         List<Ingresso> resultado = new ArrayList<Ingresso>();
         for (String entrada : listaObjetos) {
             Ingresso ingresso = getObject(entrada);
@@ -104,7 +101,7 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
     public boolean remove(Ingresso ingresso) {
         return gerenciadorDeArquivo.removerLinha(ingresso.getId());
     }
-    
+
     private String toLine(Ingresso ingresso) {
         StringBuilder sb = new StringBuilder();
         sb.append(ingresso.getId());
@@ -115,9 +112,9 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         sb.append(ServiceHelper.SEPARADOR);
         sb.append(ingresso.getSecao().getId());
         sb.append(ServiceHelper.SEPARADOR);
-        if(ingresso.getCompra() != null){
+        if (ingresso.getCompra() != null) {
             sb.append(ingresso.getCompra().getId());
-        } else{
+        } else {
             sb.append(0L);
         }
 
@@ -128,10 +125,10 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         EventoServiceHelper eventoHelper = new EventoServiceHelper();
         SecaoServiceHelper secaoHelper = new SecaoServiceHelper();
         CompraServiceHelper compraHelper = new CompraServiceHelper();
-        
+
         String[] ingresso = line.split(
                 String.valueOf(ServiceHelper.SEPARADOR));
-        
+
         long id = Long.parseLong(ingresso[0]);
         long idEvento = Long.parseLong(ingresso[ATRIBUTO_EVENTO]);
         int posicao = Integer.parseInt(ingresso[ATRIBUTO_POSICAO]);
@@ -147,7 +144,7 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         resultado.setCompra(compra);
         return resultado;
     }
-    
+
     public int getTotalDeIngressosVendidos(long idEvento) {
 
         ArrayList ingressos = (ArrayList) getTodosObjetos();
@@ -164,7 +161,7 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
 
         return ingressosVendidos;
     }
-    
+
     public int getTotalDeIngressosVendidosPorSecao(long idSecao) {
 
         ArrayList ingressos = (ArrayList) getIngressosPorSecao(idSecao);
@@ -197,18 +194,39 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         }
         return totalIngressosDoEvento;
     }
-    
-     public List<Cliente> getClientesEvento(long idEvento) {
+
+    public List<Cliente> getClientesEvento(long idEvento) {
         HashMap<String, Cliente> clientesHashMap = new HashMap<String, Cliente>();
         List<Ingresso> ingressosDoEvento = getIngressosPorEvento(idEvento);
-        
+
         for (Ingresso ingresso : ingressosDoEvento) {
             if (ingresso.getCompra() != null) {
-                    Cliente cliente = ingresso.getCompra().getCliente();
-                    clientesHashMap.put(cliente.getCpf(), cliente);
+                Cliente cliente = ingresso.getCompra().getCliente();
+                clientesHashMap.put(cliente.getCpf(), cliente);
             }
         }
-        
+
         return new ArrayList<Cliente>(clientesHashMap.values());
+    }
+
+    public float getReceitaBruta(long idEvento) {
+        float receitaBruta = 0.0f;
+
+        HashMap<Long, Compra> map = new HashMap<Long, Compra>();
+        
+        List<Ingresso> ingressosDoEvento = getIngressosPorEvento(idEvento);
+        for (Ingresso ingresso : ingressosDoEvento) {
+            Compra compra = ingresso.getCompra();
+            if (compra != null) {
+                map.put(compra.getId(), compra);
+            }
+        }
+        List<Compra> comprasDoEvento = new ArrayList<Compra>(map.values());
+        
+        for(Compra compra : comprasDoEvento){
+            receitaBruta += compra.getValor();
+        }
+        
+        return receitaBruta;
     }
 }
