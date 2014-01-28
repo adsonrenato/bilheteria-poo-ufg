@@ -198,21 +198,17 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
         return totalIngressosDoEvento;
     }
     
-     public HashMap<String, Cliente> getClientesEvento(long idEvento) {
-
-        HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
-        Ingresso ingresso;
-
-        for (int i = 0; i < getTodosObjetos().size(); i++) {
-
-            ingresso = getTodosObjetos().get(i);
-
-            if ((ingresso.getEvento().getId() == idEvento) && (ingresso.getCompra() != null)) {
+     public List<Cliente> getClientesEvento(long idEvento) {
+        HashMap<String, Cliente> clientesHashMap = new HashMap<String, Cliente>();
+        List<Ingresso> ingressosDoEvento = getIngressosPorEvento(idEvento);
+        
+        for (Ingresso ingresso : ingressosDoEvento) {
+            if (ingresso.getCompra() != null) {
                     Cliente cliente = ingresso.getCompra().getCliente();
-                    clientes.put(cliente.getCpf(), cliente);
+                    clientesHashMap.put(cliente.getCpf(), cliente);
             }
         }
-
-        return clientes;
+        
+        return new ArrayList<Cliente>(clientesHashMap.values());
     }
 }
