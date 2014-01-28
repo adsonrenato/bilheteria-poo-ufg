@@ -17,6 +17,10 @@ public class EnderecoServiceHelper implements ServiceHelper<Endereco> {
     public EnderecoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
+    
+    public EnderecoServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
 
     @Override
     public boolean gravarObjeto(Endereco endereco) {

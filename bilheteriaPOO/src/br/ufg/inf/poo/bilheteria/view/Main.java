@@ -5,6 +5,7 @@
  */
 package br.ufg.inf.poo.bilheteria.view;
 
+import br.ufg.inf.poo.bilheteria.controller.importador.Importador;
 import br.ufg.inf.poo.bilheteria.model.entity.Cliente;
 import br.ufg.inf.poo.bilheteria.model.entity.Evento;
 import br.ufg.inf.poo.bilheteria.model.entity.Secao;
@@ -70,6 +71,7 @@ public class Main {
             System.out.println("2: relatório de vendas total");
             System.out.println("3: relatório de clientes por evento");
             System.out.println("4: relatório de receita bruta");
+            System.out.println("5: importar dados");
             System.out.println("------------------------------------------------");
             opcaoEscolhida = scan.nextInt();
 
@@ -97,6 +99,11 @@ public class Main {
 
                 case 4: {
                     exibeRelatorioDeReceitaBruta();
+                    break;
+                }
+
+                case 5: {
+                    importaArquivos();
                     break;
                 }
 
@@ -169,5 +176,36 @@ public class Main {
             System.out.println("Receita bruta: " + igh.getReceitaBruta(evento.getId()));
             System.out.println("---");
         }
+    }
+
+    private static void importaArquivos() {
+        System.out.println("------------IMPORTAÇÃO---------------");
+        
+        Scanner scanner = new Scanner(System.in);
+        Importador importador = new Importador();
+        
+        System.out.println("Digite o caminho do arquivo de clientes:");
+        String arquivoClientes = scanner.nextLine();
+        importador.importarClientes(arquivoClientes);
+        
+        System.out.println("Digite o caminho do arquivo de endereços:");
+        String arquivoEnderecos = scanner.nextLine();
+        importador.importarEnderecos(arquivoEnderecos);
+        
+        System.out.println("Digite o caminho do arquivo de eventos:");
+        String arquivoEventos = scanner.nextLine();
+        importador.importarEventos(arquivoEventos);
+        
+        System.out.println("Digite o caminho do arquivo de seções:");
+        String arquivoSecoes = scanner.nextLine();
+        importador.importarSecoes(arquivoSecoes);
+        
+        System.out.println("Digite o caminho do arquivo de ingressos:");
+        String arquivoIngressos = scanner.nextLine();
+        importador.importarIngressos(arquivoIngressos);
+        
+        System.out.println("Digite o caminho do arquivo de compras:");
+        String arquivoCompras = scanner.nextLine();
+        importador.importarCompras(arquivoCompras);
     }
 }

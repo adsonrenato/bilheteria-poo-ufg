@@ -18,6 +18,10 @@ public class SecaoServiceHelper implements ServiceHelper<Secao> {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
     
+    public SecaoServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
+    
     @Override
     public boolean gravarObjeto(Secao secao) {
         if (!gerenciadorDeArquivo.contem(secao.getId())) {

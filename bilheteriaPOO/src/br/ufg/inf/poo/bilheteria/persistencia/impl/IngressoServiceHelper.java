@@ -18,6 +18,10 @@ public class IngressoServiceHelper implements ServiceHelper<Ingresso> {
     public IngressoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
+    
+    public IngressoServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
 
     @Override
     public boolean gravarObjeto(Ingresso ingresso) {

@@ -17,6 +17,10 @@ public class ClienteServiceHelper implements ServiceHelper<Cliente> {
     public ClienteServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
+    
+    public ClienteServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
 
     @Override
     public boolean gravarObjeto(Cliente cliente) {
