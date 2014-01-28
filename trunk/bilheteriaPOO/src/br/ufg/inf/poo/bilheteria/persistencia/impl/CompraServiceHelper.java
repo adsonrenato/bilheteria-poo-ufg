@@ -23,6 +23,10 @@ public class CompraServiceHelper implements ServiceHelper<Compra> {
     public CompraServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
+    
+    public CompraServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
 
     @Override
     public boolean gravarObjeto(Compra compra) {

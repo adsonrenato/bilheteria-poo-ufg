@@ -23,6 +23,10 @@ public class EventoServiceHelper implements ServiceHelper<Evento> {
     public EventoServiceHelper() {
         gerenciadorDeArquivo = new CSVToFile(ARQUIVO);
     }
+    
+    public EventoServiceHelper(String filename) {
+        gerenciadorDeArquivo = new CSVToFile(filename);
+    }
 
     @Override
     public boolean gravarObjeto(Evento evento) {
